@@ -6,7 +6,13 @@ const File = require("./models/File")
 
 const express = require("express")
 const app = express()
+
 app.use(express.urlencoded({ extended: true }))
+
+// Static files
+app.use(express.static("public"))
+app.use("/css", express.static(__dirname + "public/css"))
+app.use("/img", express.static(__dirname + "public/img"))
 
 const upload = multer({ dest: "uploads" })
 
@@ -56,4 +62,4 @@ async function handleDownload(req, res) {
   res.download(file.path, file.originalName)
 }
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT, () => console.info(`Listening on port ${process.env.PORT}`))

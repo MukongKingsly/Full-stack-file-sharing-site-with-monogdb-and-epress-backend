@@ -13,7 +13,7 @@
       <h1 class="page-title">File sharing site</h1>
       <% if (locals.fileLink != null) { %>
       <div class="uploadedMsg">
-        Your file is upload
+        <span class="uploadedConfirmation">Your file is uploaded<br></span>
         <a href="<%= locals.fileLink %>"><%= locals.fileLink %></a>
       </div>
       <% } %>

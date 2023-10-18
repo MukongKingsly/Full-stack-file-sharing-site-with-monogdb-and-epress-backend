@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/upload", upload.single("file"), async (req, res, next) => {
   try {
     const fileData = {
       path: req.file.path,
@@ -38,37 +38,35 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     const file = await File.create(fileData);
 
-    res.render("index", { fileLink: `${req.headers.origin}/file/${file.id}` });
+    return res.render("index", {
+      fileLink: `${req.headers.origin}/file/${file.id}`,
+    });
   } catch (error) {
-    throw new Error(error);
+    next(error);
   }
 });
 
 app.route("/file/:id").get(handleDownload).post(handleDownload);
 
-async function handleDownload(req, res) {
+async function handleDownload(req, res, next) {
   try {
     const file = await File.findById(req.params.id);
 
     if (file.password != null) {
       if (req.body.password == null) {
-        res.render("password");
-        return;
+        return res.render("password");
       }
 
       if (!(await bcrypt.compare(req.body.password, file.password))) {
-        res.render("password", { error: true });
-        return;
+        return res.render("password", { error: true });
       }
     }
 
     file.downloadCount++;
     await file.save();
-    console.log(file.downloadCount);
-
-    res.download(file.path, file.originalName);
+    return res.download(file.path, file.originalName);
   } catch (error) {
-    throw new Error(error);
+    next(error);
   }
 }
 

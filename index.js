@@ -3,7 +3,7 @@ const multer = require("multer");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
-const File = require("./models/File");
+const File = require("./models/fileModel");
 const corsOptions = require("./config/corsOptions");
 
 const express = require("express");

@@ -2,7 +2,7 @@ require("dotenv").config();
 const multer = require("multer");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const cors = require("cors");
+// const cors = require("cors");
 const File = require("./models/fileModel");
 const corsOptions = require("./config/corsOptions");
 
@@ -10,7 +10,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 // Static files
 app.use(express.static("public"));
 app.use("/css", express.static(__dirname + "public/css"));
